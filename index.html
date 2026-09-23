@@ -77,7 +77,7 @@
   <main class="wrap">
     <header>
       <div class="topline"><h1>Расписание преподавателя</h1><button class="theme" id="themeBtn" type="button" aria-label="Переключить тему">◐</button></div>
-      <p class="subtitle">1 семестр 2026/2027 · расписание доступно без интернета</p>
+      <p class="subtitle">1 семестр 2026/2027 учебного года</p>
     </header>
 
     <section id="searchCard" class="card" aria-label="Выбор преподавателя" hidden>
@@ -155,13 +155,15 @@
     }
     function selectTeacher(name) {
       teacher=name;
+      try { localStorage.setItem('teacher-schedule-2026:selected',name); } catch (_) {}
       $('searchArea').hidden=true; $('selectedArea').hidden=false; $('selectedName').textContent=name;
       $('controls').hidden=false; $('resultsCard').hidden=false;
       $('teacherInput').value=''; suggestions('');
       render();
     }
     function changeTeacher() {
-      teacher=null; $('searchArea').hidden=false; $('selectedArea').hidden=true; $('controls').hidden=true; $('resultsCard').hidden=true; $('teacherInput').focus();
+      teacher=null; try { localStorage.removeItem('teacher-schedule-2026:selected'); } catch (_) {}
+      $('searchArea').hidden=false; $('selectedArea').hidden=true; $('controls').hidden=true; $('resultsCard').hidden=true; $('teacherInput').focus();
     }
     function setMode(next) { mode=next; render(); }
     function weekDateForCycle(target) {
@@ -219,6 +221,7 @@
     $('searchCard').hidden=false;
     $('searchArea').hidden=false;
     $('fallback').hidden=true;
+    try { const saved=localStorage.getItem('teacher-schedule-2026:selected'); if (DATA.teachers.includes(saved)) selectTeacher(saved); } catch (_) {}
   </script>
 </body>
 </html>
